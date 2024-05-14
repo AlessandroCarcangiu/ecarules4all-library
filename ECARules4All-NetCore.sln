@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECARules4All-NetCore", "ECARules4All-NetCore\ECARules4All-NetCore.csproj", "{AF1DD997-276A-4CB8-BE4E-6979AA53A89B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AF1DD997-276A-4CB8-BE4E-6979AA53A89B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF1DD997-276A-4CB8-BE4E-6979AA53A89B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF1DD997-276A-4CB8-BE4E-6979AA53A89B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF1DD997-276A-4CB8-BE4E-6979AA53A89B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

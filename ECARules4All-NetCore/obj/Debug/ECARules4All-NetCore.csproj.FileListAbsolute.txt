@@ -1,0 +1,10 @@
+C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\obj\Debug\ECARules4All-NetCore.csproj.AssemblyReference.cache
+C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\obj\Debug\ECARules4All-NetCore.csproj.CoreCompileInputs.cache
+C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\bin\Debug\ECARules4All_NetCore.dll
+C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\bin\Debug\ECARules4All_NetCore.pdb
+C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\bin\Debug\Antlr4.Runtime.Standard.dll
+C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\bin\Debug\UnityEngine.dll
+C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\bin\Debug\UnityEngine.xml
+C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\obj\Debug\ECARules.F31DBFF3.Up2Date
+C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\obj\Debug\ECARules4All_NetCore.dll
+C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\obj\Debug\ECARules4All_NetCore.pdb

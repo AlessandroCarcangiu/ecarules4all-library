@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props"
+            Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{AF1DD997-276A-4CB8-BE4E-6979AA53A89B}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>ECARules4All_NetCore</RootNamespace>
+        <AssemblyName>ECARules4All_NetCore</AssemblyName>
+        <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+        <FileAlignment>512</FileAlignment>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="Antlr4.Runtime.Standard">
+          <HintPath>AntLR\Antlr4.Runtime.Standard.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.CSharp" />
+        <Reference Include="System"/>
+        <Reference Include="System.Core"/>
+        <Reference Include="System.Data"/>
+        <Reference Include="System.Xml"/>
+        <Reference Include="UnityEngine">
+          <HintPath>..\..\..\..\..\Program Files\Unity\Hub\Editor\2023.2.16f1\Editor\Data\Managed\UnityEngine.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="AntLR\ECARulesLexer.cs" />
+        <Compile Include="AntLR\ECARulesParser.cs" />
+        <Compile Include="AntLR\ECARulesParserBaseListener.cs" />
+        <Compile Include="AntLR\ECARulesParserListener.cs" />
+        <Compile Include="Behaviour.cs" />
+        <Compile Include="ECAObject.cs" />
+        <Compile Include="Objects.cs" />
+        <Compile Include="Properties\AssemblyInfo.cs"/>
+        <Compile Include="RuleEngine.cs" />
+        <Compile Include="RuleEngineLoader.cs" />
+        <Compile Include="Taxonomies\Behaviours\Subcategories\Collectable.cs" />
+        <Compile Include="Taxonomies\Behaviours\Subcategories\Container.cs" />
+        <Compile Include="Taxonomies\Behaviours\Subcategories\Counter.cs" />
+        <Compile Include="Taxonomies\Behaviours\Subcategories\Highlight.cs" />
+        <Compile Include="Taxonomies\Behaviours\Subcategories\Interactable.cs" />
+        <Compile Include="Taxonomies\Behaviours\Subcategories\Keypad.cs" />
+        <Compile Include="Taxonomies\Behaviours\Subcategories\Lock.cs" />
+        <Compile Include="Taxonomies\Behaviours\Subcategories\Particle.cs" />
+        <Compile Include="Taxonomies\Behaviours\Subcategories\Placeholder.cs" />
+        <Compile Include="Taxonomies\Behaviours\Subcategories\Sound.cs" />
+        <Compile Include="Taxonomies\Behaviours\Subcategories\Switch.cs" />
+        <Compile Include="Taxonomies\Behaviours\Subcategories\Timer.cs" />
+        <Compile Include="Taxonomies\Behaviours\Subcategories\Transition.cs" />
+        <Compile Include="Taxonomies\Behaviours\Subcategories\Trigger.cs" />
+        <Compile Include="Taxonomies\Objects\Characters\Animal\Animal.cs" />
+        <Compile Include="Taxonomies\Objects\Characters\Animal\Subcategories\AquaticAnimal.cs" />
+        <Compile Include="Taxonomies\Objects\Characters\Animal\Subcategories\Creature.cs" />
+        <Compile Include="Taxonomies\Objects\Characters\Animal\Subcategories\FlyingAnimal.cs" />
+        <Compile Include="Taxonomies\Objects\Characters\Animal\Subcategories\Human.cs" />
+        <Compile Include="Taxonomies\Objects\Characters\Animal\Subcategories\Mannequin.cs" />
+        <Compile Include="Taxonomies\Objects\Characters\Animal\Subcategories\Robot.cs" />
+        <Compile Include="Taxonomies\Objects\Characters\Animal\Subcategories\TerrestrialAnimal.cs" />
+        <Compile Include="Taxonomies\Objects\Characters\Character.cs" />
+        <Compile Include="Taxonomies\Prop\Prop.cs" />
+        <Compile Include="Taxonomies\Prop\Subcategories\Clothing.cs" />
+        <Compile Include="Taxonomies\Prop\Subcategories\Electronic.cs" />
+        <Compile Include="Taxonomies\Prop\Subcategories\Food.cs" />
+        <Compile Include="Utils\ActionAttribute.cs" />
+        <Compile Include="Utils\ECABoolean.cs" />
+        <Compile Include="Utils\ECAOutline.cs" />
+        <Compile Include="Utils\ECARules4AllAttribute.cs" />
+        <Compile Include="Utils\ECARules4AllOperations.cs" />
+        <Compile Include="Utils\ECARules4AllType.cs" />
+        <Compile Include="Utils\StateVariableAttribute.cs" />
+    </ItemGroup>
+    <ItemGroup>
+      <Content Include="AntLR\Antlr4.Runtime.Standard.dll" />
+      <Content Include="AntLR\Antlr4.Runtime.Standard.dll.meta" />
+      <Content Include="AntLR\ECARulesLexer.cs.meta" />
+      <Content Include="AntLR\ECARulesLexer.g4" />
+      <Content Include="AntLR\ECARulesLexer.g4.meta" />
+      <Content Include="AntLR\ECARulesLexer.interp" />
+      <Content Include="AntLR\ECARulesLexer.interp.meta" />
+      <Content Include="AntLR\ECARulesLexer.tokens" />
+      <Content Include="AntLR\ECARulesLexer.tokens.meta" />
+      <Content Include="AntLR\ECARulesParser.cs.meta" />
+      <Content Include="AntLR\ECARulesParser.g4" />
+      <Content Include="AntLR\ECARulesParser.g4.meta" />
+      <Content Include="AntLR\ECARulesParser.interp" />
+      <Content Include="AntLR\ECARulesParser.interp.meta" />
+      <Content Include="AntLR\ECARulesParser.tokens" />
+      <Content Include="AntLR\ECARulesParser.tokens.meta" />
+      <Content Include="AntLR\ECARulesParserBaseListener.cs.meta" />
+      <Content Include="AntLR\ECARulesParserListener.cs.meta" />
+      <Content Include="AntLR\extensible.meta" />
+      <Content Include="AntLR\extensible\ECARulesLexer.g4" />
+      <Content Include="AntLR\extensible\ECARulesLexer.g4.meta" />
+      <Content Include="AntLR\extensible\ECARulesParser.g4" />
+      <Content Include="AntLR\extensible\ECARulesParser.g4.meta" />
+    </ItemGroup>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
+    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+         Other similar extension points exist, see Microsoft.Common.targets.
+    <Target Name="BeforeBuild">
+    </Target>
+    <Target Name="AfterBuild">
+    </Target>
+    -->
+
+</Project>
