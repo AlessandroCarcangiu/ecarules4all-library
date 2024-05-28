@@ -176,6 +176,14 @@ namespace ECARules4AllPack.Utils
         //Dictionary of Rules
         public static Dictionary<string, RulesStruct> rulesDictionary =
             new Dictionary<string, RulesStruct>();
+
+
+        // +---------------------------------------------------+
+        // | Next 3 variables - from ConditionDropownHandle.cs |
+        // +---------------------------------------------------+
+        private Dictionary<string, (ECARules4AllType, Type)> stateVariables = new Dictionary<string, (ECARules4AllType, Type)>();
+        public static List<string> booleanSymbols = new List<string>() {"is", "is not"};
+        public static List<string> mathematicalSymbols = new List<string>() {"=", "!=", ">", "<", "<=", ">="};
         
         public static RuleString ConvertRuleObjectToRuleString(Rule rule, string ruleText)
         {
@@ -1090,5 +1098,139 @@ namespace ECARules4AllPack.Utils
             return raycastPointer.LastSelectedObject;
         }
 
+
+       
+        // +-----------------------------------------+
+        // | Methods from ConditionDropdownHandle.cs |
+        // +-----------------------------------------+
+        // Gets the keys of the state variables
+        public List<string> GetStateVariableKeys()
+        {
+            List<string> entries = new List<string>();
+            foreach (var var in stateVariables)
+            {
+                if (var.Key == "rotation")
+                {
+                    entries.Add("rotation x");
+                    entries.Add("rotation y");
+                    entries.Add("rotation z");
+                }
+                else
+                {
+                    entries.Add(var.Key);
+                }
+            }
+            return entries;
+        }
+
+        // Gets the symbols for a specific type
+        public List<string> GetSymbolsForType(ECARules4AllType type)
+        {
+            List<string> entries = new List<string>();
+            switch (type)
+            {
+                case ECARules4AllType.Float:
+                case ECARules4AllType.Integer:
+                    entries.AddRange(mathematicalSymbols);
+                    break;
+                case ECARules4AllType.Boolean:
+                case ECARules4AllType.Position:
+                case ECARules4AllType.Rotation:
+                case ECARules4AllType.Path:
+                case ECARules4AllType.Color:
+                case ECARules4AllType.Text:
+                case ECARules4AllType.Identifier:
+                case ECARules4AllType.Time:
+                    entries.AddRange(booleanSymbols);
+                    break;
+            }
+            return entries;
+        }
+
+        // Gets the entries for the 'toCheck' dropdown
+        public List<string> GetToCheckEntries(Dictionary<int, Dictionary<GameObject, string>> toCheckDictionary)
+        {
+            List<string> entries = new List<string>();
+            for (int i = 0; i < toCheckDictionary.Count; i++)
+            {
+                foreach (KeyValuePair<GameObject, string> entry in toCheckDictionary[i])
+                {
+                    //string type = RuleUtils.FindInnerTypeNotBehaviour(entry.Key);
+                    //type = RuleUtils.RemoveECAFromString(type);
+                    //entries.Add(type + " " + entry.Key.name);
+
+                    string type = FindInnerTypeNotBehaviour(entry.Key);
+                    type = RemoveECAFromString(type);
+                    entries.Add(type + " " + entry.Key.name);
+                }
+            }
+            return entries;
+        }
+
+        // Gets the entries for the comparison based on type
+        public List<string> GetEntriesForType(ECARules4AllType type, string selectedType, XRRaycastPointer raycastPointer)
+        {
+            List<string> entries = new List<string>();
+            switch (type)
+            {
+                case ECARules4AllType.Color:
+                    foreach (KeyValuePair<string, Color> kvp in DropdownHandler.colorDict)
+                        entries.Add(kvp.Key);
+                    break;
+                case ECARules4AllType.Position:
+                    Vector3 selectedPos = raycastPointer.pos;
+                    if (selectedPos != Vector3.zero) 
+                        entries.Add("Last selected position");
+                    break;
+                case ECARules4AllType.Boolean:
+                    if (selectedType == "ECALight" || selectedType == "Light")
+                    {
+                        entries.Add("on");
+                        entries.Add("off");
+                    }
+                    else
+                    {
+                        entries.Add("true");
+                        entries.Add("false");
+                    }
+                    break;
+                case ECARules4AllType.Identifier:
+                    if (selectedType == "pov")
+                    {
+                        entries.Add("First");
+                        entries.Add("Third");
+                    }
+                    break;
+            }
+            return entries;
+        }
+
+        // Gets the input field validation type for a specific variable type
+        public InputField.CharacterValidation GetInputFieldValidation(ECARules4AllType type)
+        {
+            switch (type)
+            {
+                case ECARules4AllType.Float:
+                case ECARules4AllType.Time:
+                case ECARules4AllType.Rotation:
+                    return InputField.CharacterValidation.Decimal;
+                case ECARules4AllType.Integer:
+                    return InputField.CharacterValidation.Integer;
+                case ECARules4AllType.Text:
+                    return InputField.CharacterValidation.Alphanumeric;
+                default:
+                    return InputField.CharacterValidation.None;
+            }
+        }
+
+
+        // +--------------------------------------------------------------------------+
+        // | Methods from ConditionDropdownHandle.cs to check - probably to eliminate |
+        // +--------------------------------------------------------------------------+
+        // Gets the type of a specific state variable
+        public ECARules4AllType GetStateVariableType(string variableName)
+        {
+            return stateVariables[variableName].Item1;
+        }
     }
 }
