@@ -949,5 +949,146 @@ namespace ECARules4AllPack.Utils
             serializer.SaveRules(path);
         }
         
+
+        // +--------------------------------------+
+        // | Logic methods from DropdownHandle.cs |
+        // +--------------------------------------+
+         // Method to get the truncated string from dropdown text
+        public string GetSelectedCutString(string selectedSubjectString)
+        {
+            return Regex.Match(selectedSubjectString, "[^ ]* (.*)").Groups[1].Value;
+        }
+
+        // Method to get the type of the selected subject from a dictionary
+        public string GetSubjectType(GameObject subjectSelected, Dictionary<string, Dictionary<GameObject, string>> subjects)
+        {
+            foreach (var item in subjects)
+            {
+                foreach (var keyValuePair in item.Value)
+                {
+                    if (keyValuePair.Key == subjectSelected)
+                    {
+                        return keyValuePair.Value;
+                    }
+                }
+            }
+            return null;
+        }
+
+        // Method to get action attributes associated with the selected verb
+        public List<ActionAttribute> GetActionAttributes(Dictionary<string, List<ActionAttribute>> verbsString, string verbSelectedString)
+        {
+            return verbsString[verbSelectedString];
+        }
+
+        // Method to handle action attributes for the object dropdown
+        public List<string> GetObjectDropdownEntries(GameObject subjectSelected, Dictionary<int, Dictionary<GameObject, string>> subjects, ActionAttribute ac)
+        {
+            List<string> entries = new List<string>();
+            if (ac.ObjectType != null)
+            {
+                switch (ac.ObjectType.Name)
+                {
+                    case "Object":
+                    case "ECAObject":
+                    case "GameObject":
+                        for (int i = 0; i < subjects.Count; i++)
+                        {
+                            foreach (KeyValuePair<GameObject, string> entry in subjects[i])
+                            {
+                                if (entry.Key != subjectSelected)
+                                {
+                                    // string type = RuleUtils.FindInnerTypeNotBehaviour(entry.Key);
+                                    // type = RuleUtils.RemoveECAFromString(type);
+                                    // entries.add(type + " " + entry.Key.name);
+
+                                    string type = FindInnerTypeNotBehaviour(entry.Key);
+                                    type = RemoveECAFromString(type);
+                                    entries.add(type + " " + entry.Key.name);
+                                }
+                            }
+                        }
+                        break;
+                    case "YesNo":
+                        entries.Add("yes");
+                        entries.Add("no");
+                        break;
+                    case "TrueFalse":
+                        entries.Add("true");
+                        entries.Add("false");
+                        break;
+                    case "OnOff":
+                        entries.Add("on");
+                        entries.Add("off");
+                        break;
+                    case "Position":
+                        Vector3 selectedPos = raycastPointer.pos;
+                        if (selectedPos != Vector3.zero)
+                        {
+                            entries.Add("Last selected position");
+                        }
+                        break;
+                    // Handle other cases...
+                }
+            }
+            return entries;
+        }
+
+        // Method to handle value dropdown entries
+        public List<string> GetValueDropdownEntries(List<ActionAttribute> actionAttributes)
+        {
+            List<string> entries = new List<string>();
+            foreach (var ac in actionAttributes)
+            {
+                if (ac.ValueType != null)
+                {
+                    entries.Add(ac.variableName);
+                }
+            }
+            return entries;
+        }
+        
+        // Method to find the index of a dropdown option by the GameObject name
+        public int FindDropdownOptionIndexByName(Dropdown dropdown, string objectName)
+        {
+            for (int i = 0; i < dropdown.options.Count; i++)
+            {
+                if (objectName == dropdown.options[i].text.Split(' ').Last())
+                {
+                    return i;
+                }
+            }
+            return -1; // Object not found
+        }
+
+
+        // +-----------------------------------------------------------------+
+        // | Methods from DropdownHandle.cs to check - probably to eliminate |
+        // +-----------------------------------------------------------------+
+        
+        // Method to get active and passive verbs associated with the selected subject
+        public List<VerbItem> GetVerbs(GameObject subjectSelected, Dictionary<string, Dictionary<GameObject, string>> subjects, string subjectSelectedType)
+        {
+            // var verbsItem = RuleUtils.FindActiveVerbs(subjectSelected, subjects, subjectSelectedType, true);
+            // RuleUtils.FindPassiveVerbs(subjectSelected, subjects, subjectSelectedType, ref verbsItem);
+            // return verbsItem;
+
+            var verbsItem = FindActiveVerbs(subjectSelected, subjects, subjectSelectedType, true);
+            FindPassiveVerbs(subjectSelected, subjects, subjectSelectedType, ref verbsItem);
+            return verbsItem;
+        }
+
+        // Method to find a GameObject by its truncated name
+        public GameObject FindGameObject(string selectedCutString)
+        {
+            return GameObject.Find(selectedCutString);
+        }
+
+        // Method to get the last selected object by raycast
+        public GameObject GetLastSelectedObjectByRaycast()
+        {
+            return raycastPointer.LastSelectedObject;
+        }
+
     }
 }
