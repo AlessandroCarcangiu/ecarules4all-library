@@ -1232,5 +1232,475 @@ namespace ECARules4AllPack.Utils
         {
             return stateVariables[variableName].Item1;
         }
+    
+
+        // +-------------------------------+
+        // | Methods from ButtonsHandle.cs |
+        // +-------------------------------+
+        public Rule CreateRule(
+            Func<string, GameObject> findGameObjectByName,
+            Func<string, List<GameObject>> findGameObjectsByTag,
+            Action<string> log)
+        {
+            Rule rule = null; //result
+
+            RuleString ruleString = new RuleString() { };
+            List<StringAction> actionString = new List<StringAction>();
+            List<StringCondition> conditionString = new List<StringCondition>();
+            StringAction eventString = new StringAction();
+
+            // When action
+            Action whenAction = FindAction(findGameObjectByName("Event"), ref eventString);
+            bool whenValid = whenAction.IsValid();
+            if (!whenValid)
+            {
+                log("Invalid when");
+                return null; //the findAction returns null, so something is missing
+            }
+
+            // Actions
+            var allActions = findGameObjectsByTag("Action");
+            var actions = from act in allActions where act.name != "ActionPrefab" select act;
+            if (!actions.Any()) return null;
+
+            bool thenValid = true;
+            ArrayList<Action> listOfActions = new ArrayList<Action>();
+            foreach (var action in actions)
+            {
+                StringAction singleAction = new StringAction();
+                Action thenAction = FindAction(action, ref singleAction);
+                if (thenAction.IsValid())
+                {
+                    actionString.Add(singleAction);
+                    listOfActions.Add(thenAction);
+                }
+                else thenValid = false;
+            }
+
+            if (!thenValid)
+            {
+                log("Invalid then");
+                return null; //if one of the action is not valid, the rule is null
+            }
+
+            // Conditions
+            bool condition = false;
+            bool compositeConditions = false;
+
+            // Check if condition exists
+            GameObject simpleC = findGameObjectByName("SimpleConditionPrefab(Clone)");
+            SimpleCondition simpleCondition = new SimpleCondition(simpleC, "", "", "");
+            CompositeCondition finalCondition = new CompositeCondition();
+            if (simpleC != null)
+            {
+                condition = true;
+                simpleCondition = FindSimpleCondition(simpleC);
+                if (simpleCondition.IsValid())
+                {
+                    StringCondition simpleConditionString = CreateStringCondition(simpleC, simpleCondition, false);
+                    conditionString.Add(simpleConditionString);
+                    // Composite conditions
+                    compositeConditions = CompositeConditionExists();
+                    if (compositeConditions)
+                    {
+                        finalCondition = CreateCompositeConditions(simpleCondition);
+                        var allCompositeConditionObjects = findGameObjectsByTag("CompositeCondition");
+                        var compositeConditionObjects = from act in allCompositeConditionObjects
+                                                        where act.name != "CompositeConditionPrefab" select act;
+                        foreach (var obj in compositeConditionObjects)
+                        {
+                            StringCondition compConditionString =
+                                CreateStringCondition(obj, FindSimpleCondition(obj), true);
+                            conditionString.Add(compConditionString);
+                        }
+                    }
+                }
+                else return null;
+            }
+
+            if (condition && simpleCondition.IsValid())
+            {
+                rule = compositeConditions
+                    ? new Rule(whenAction, finalCondition, listOfActions)
+                    : new Rule(whenAction, simpleCondition, listOfActions);
+            }
+            else
+            {
+                rule = new Rule(whenAction, listOfActions);
+            }
+
+            log("Valid rule");
+
+            ruleString = new RuleString(eventString, conditionString, actionString);
+            return rule;
+        }
+    
+        public StringCondition CreateStringCondition(
+            SimpleCondition simpleCondition,
+            bool composite,
+            Func<Dropdown> getAndOrDropdown,
+            Func<Dropdown> getToCheckDropdown,
+            Func<Dropdown> getCompareWithDropdown,
+            Func<InputField> getCompareWithInputField)
+        {
+            StringCondition result = new StringCondition();
+
+            if (!composite)
+            {
+                result.AndOr = "";
+            }
+            else
+            {
+                Dropdown andOr = getAndOrDropdown();
+                result.AndOr = andOr.options[andOr.value].text;
+            }
+
+            Dropdown dropdownToCheck = getToCheckDropdown();
+            Dropdown dropdownCompareWithDrop = getCompareWithDropdown();
+            if (dropdownCompareWithDrop && dropdownCompareWithDrop.IsActive())
+            {
+                result.CompareWith = dropdownCompareWithDrop.options[dropdownCompareWithDrop.value].text;
+            }
+            else
+            {
+                InputField compareCompareWithInput = getCompareWithInputField();
+                result.CompareWith = compareCompareWithInput.text;
+            }
+
+            result.Property = simpleCondition.GetProperty();
+            result.CheckSymbol = simpleCondition.GetSymbol();
+            result.ToCheck = dropdownToCheck.options[dropdownToCheck.value].text;
+
+            return result;
+        }
+    
+        public CompositeCondition CreateCompositeConditions(
+            SimpleCondition firstCondition,
+            List<GameObject> compositeConditionObjects,
+            Func<GameObject, SimpleCondition> findSimpleCondition,
+            Func<GameObject, CompositeCondition.ConditionType> findOperator)
+        {
+            var simpleConditions = new List<SimpleCondition> { firstCondition };
+            var conditionTypes = new List<CompositeCondition.ConditionType>();
+
+            foreach (var obj in compositeConditionObjects)
+            {
+                SimpleCondition simpleCondition = findSimpleCondition(obj);
+                if (simpleCondition != null)
+                {
+                    simpleConditions.Add(simpleCondition);
+                    conditionTypes.Add(findOperator(obj));
+                }
+            }
+
+            simpleConditions.Reverse();
+            conditionTypes.Reverse();
+
+            CompositeCondition result = new CompositeCondition();
+
+            if (simpleConditions.Count > 2)
+            {
+                result = new CompositeCondition(conditionTypes[0], new List<Condition>
+                {
+                    simpleConditions[1], simpleConditions[0]
+                });
+
+                for (int i = 2; i < simpleConditions.Count; i++)
+                {
+                    result = new CompositeCondition(conditionTypes[i - 1], new List<Condition>
+                    {
+                        simpleConditions[i], result
+                    });
+                }
+            }
+            else if (simpleConditions.Count == 2)
+            {
+                result = new CompositeCondition(conditionTypes[0], new List<Condition>
+                {
+                    simpleConditions[1], simpleConditions[0]
+                });
+            }
+
+            return result;
+        }
+    
+        public CompositeCondition.ConditionType FindOperator(GameObject compositeConditionObject)
+        {
+            ConditionDropdownHandler conditionDropdownHandler =
+                compositeConditionObject.GetComponent<ConditionDropdownHandler>();
+            Dropdown andOr = conditionDropdownHandler.andOr;
+            string value = andOr.options[andOr.value].text;
+            if (value.Equals("And"))
+            {
+                return CompositeCondition.ConditionType.AND;
+            }
+
+            return CompositeCondition.ConditionType.OR;
+        }
+    
+        public static Action CreateAction(GameObject subjectSelected, string verbSelectedString, object objectValue = null, string prep = "", object value = null) {
+            if (subjectSelected == null || string.IsNullOrEmpty(verbSelectedString))
+                return new Action();
+
+            if (value != null) {
+                switch (value) {
+                    case ECABoolean booleanValue:
+                        return new Action(subjectSelected, verbSelectedString, objectValue, prep, booleanValue);
+                    case string stringValue:
+                        return new Action(subjectSelected, verbSelectedString, objectValue, prep, stringValue);
+                    case int intValue:
+                        return new Action(subjectSelected, verbSelectedString, objectValue, prep, intValue);
+                    case double doubleValue:
+                        return new Action(subjectSelected, verbSelectedString, objectValue, prep, doubleValue);
+                    case float floatValue:
+                        return new Action(subjectSelected, verbSelectedString, objectValue, prep, floatValue);
+                    case Position positionValue:
+                        return new Action(subjectSelected, verbSelectedString, positionValue);
+                    case Rotation rotationValue:
+                        return new Action(subjectSelected, verbSelectedString, rotationValue);
+                    case ECACamera.POV povValue:
+                        return new Action(subjectSelected, verbSelectedString, objectValue, prep, povValue);
+                    case ECAColor colorValue:
+                        return new Action(subjectSelected, verbSelectedString, objectValue, prep, colorValue);
+                    default:
+                        return new Action(subjectSelected, verbSelectedString, objectValue, prep, value);
+                }
+            }
+
+            return new Action(subjectSelected, verbSelectedString, objectValue, prep);
+        }
+    
+        public static bool CheckIfCompositeConditionExists()
+        {
+            var allCompositeConditionObjects = GameObject.FindGameObjectsWithTag("CompositeCondition").ToList();
+            var compositeConditionObjects = from act in allCompositeConditionObjects where act.name != "CompositeConditionPrefab" select act;
+            return compositeConditionObjects.Count() > 0;
+        }
+
+        public static void DiscardChanges()
+        {
+            // Event
+            GameObject eventParentObj = GameObject.Find("Event");
+            ClearEventAction(eventParentObj);
+
+            // Action
+            GameObject[] allActionParentObj = GameObject.FindGameObjectsWithTag("Action");
+            var actionParentObj = from act in allActionParentObj where act.name != "ActionPrefab" select act;
+            var actParObj = actionParentObj.ToArray();
+            ClearEventAction(actParObj[0]); // leave only the first action
+            for (int i = 1; i < actParObj.Length; i++)
+            {
+                GameObject.Destroy(actParObj[i]);
+            }
+
+            // Simple condition
+            GameObject simpleCondParentObj = GameObject.Find("SimpleConditionPrefab(Clone)");
+            if (simpleCondParentObj)
+            {
+                ConditionDropdownHandler conditionDropdownHandler = simpleCondParentObj.GetComponent<ConditionDropdownHandler>();
+                if (conditionDropdownHandler.ToCheckSelected && conditionDropdownHandler.ToCheckSelected.transform.GetComponent<ECAOutline>())
+                {
+                    GameObject.Destroy(conditionDropdownHandler.ToCheckSelected.transform.GetComponent<ECAOutline>());
+                }
+                GameObject.Destroy(simpleCondParentObj);
+            }
+
+            // Composite condition
+            GameObject[] allConditionsParentObj = GameObject.FindGameObjectsWithTag("CompositeCondition");
+            var conditionsParentObj = from act in allConditionsParentObj where act.name != "CompositeConditionPrefab" select act;
+            foreach (var condition in conditionsParentObj)
+            {
+                ConditionDropdownHandler compositeDropdownHandler = condition.GetComponent<ConditionDropdownHandler>();
+                if (compositeDropdownHandler.ToCheckSelected && compositeDropdownHandler.ToCheckSelected.transform.GetComponent<ECAOutline>())
+                {
+                    GameObject.Destroy(compositeDropdownHandler.ToCheckSelected.transform.GetComponent<ECAOutline>());
+                }
+                GameObject.Destroy(condition);
+            }
+        }
+    
+        public static void ClearEventAction(DropdownHandler dropdownHandlerScript)
+        {
+            // Clean references
+            dropdownHandlerScript.VerbsItem.Clear();
+            dropdownHandlerScript.VerbsString.Clear();
+            dropdownHandlerScript.StateVariables.Clear();
+            dropdownHandlerScript.Subjects.Clear();
+
+            // Remove color from selected subject
+            GameObject subjectSelected = dropdownHandlerScript.SubjectSelected;
+            if (subjectSelected && subjectSelected.transform.GetComponent<ECAOutline>())
+            {
+                GameObject.Destroy(subjectSelected.transform.GetComponent<ECAOutline>());
+            }
+
+            // Remove color from selected object
+            GameObject objectSelected = dropdownHandlerScript.ObjectSelected;
+            if (objectSelected && objectSelected.transform.GetComponent<ECAOutline>())
+            {
+                GameObject.Destroy(objectSelected.transform.GetComponent<ECAOutline>());
+            }
+
+            dropdownHandlerScript.SubjectSelected = null;
+            dropdownHandlerScript.ObjectSelected = null;
+        }
+
+        public static string FormatRule()
+        {
+            string sRule = "";
+
+            StringAction newStringAction = new StringAction();
+            // When action
+            Action whenAction = FindAction(GameObject.Find("Event"), ref newStringAction);
+            GameObject whenEventObj = GameObject.Find("Event");
+
+            sRule += ParseActionEvent(whenEventObj, whenAction, "When ");
+
+            // First then action
+            Action thenAction = FindAction(GameObject.Find("Action"), ref newStringAction);
+            GameObject thenEventObj = GameObject.Find("Action");
+
+            // Conditions
+            bool condition = false;
+            bool compositeConditions = false;
+
+            // Check if condition exists
+            GameObject simpleC = GameObject.Find("SimpleConditionPrefab(Clone)");
+
+            // Initialize variables with standard values
+            SimpleCondition simpleCondition = new SimpleCondition(simpleC, "", "", "");
+            CompositeCondition finalCondition = new CompositeCondition();
+
+            if (simpleC != null)
+            {
+                condition = true;
+                simpleCondition = FindSimpleCondition(simpleC);
+
+                if (simpleCondition.IsValid())
+                {
+                    sRule += ParseSimpleCondition(simpleC, simpleCondition, "CompareWithDrop", "If ");
+
+                    // Composite conditions
+                    compositeConditions = compositeConditionExists();
+                    if (compositeConditions)
+                    {
+                        GameObject[] allCompositeConditionObjects = GameObject.FindGameObjectsWithTag("CompositeCondition");
+                        var compositeConditionObjects = from act in allCompositeConditionObjects where act.name != "CompositeConditionPrefab" select act;
+                        sRule += ParseCompositeCondition(compositeConditionObjects.ToArray());
+                    }
+                }
+            }
+
+            // Add the then action(s) to the parsed string
+            GameObject[] allActlist = GameObject.FindGameObjectsWithTag("Action");
+            var alist = from act in allActlist where act.name != "ActionPrefab" select act;
+            sRule += "Then" + ParseMultipleActions(alist.ToArray());
+
+            // Remove unity objects' related parts of the string
+            sRule = sRule.Replace("(UnityEngine.GameObject)", "");
+
+            return sRule;
+        }
+
+        public static string ParseActionEvent(GameObject obj, ECARules4All.RuleEngine.Action actionEvent, string header)
+        {
+            string parsed = "";
+
+            Dropdown dropdown = obj.transform.Find("ObjectDrop").GetComponent<Dropdown>();
+
+            if (dropdown.IsActive())
+            {
+                string property = dropdown.options[dropdown.value].text;
+
+                if (property == "color")
+                {
+                    Dropdown whenColor = obj.transform.Find("ValueDrop").GetComponent<Dropdown>();
+                    string color = whenColor.options[whenColor.value].text;
+
+                    string[] separator = { "#" };
+                    string[] removeRGBA = actionEvent.ToString().Split(separator, StringSplitOptions.None);
+
+                    parsed += header + removeRGBA[0] + color + "\n";
+                }
+                else
+                {
+                    parsed += header + actionEvent + "\n";
+                }
+            }
+            else
+            {
+                parsed += header + actionEvent + "\n";
+            }
+
+            return parsed;
+        }
+
+        public string ParseSimpleCondition(GameObject obj, SimpleCondition sc, string transformProperty, string header)
+        {
+            string parsed = "";
+
+            Dropdown property = obj.transform.Find(transformProperty).GetComponent<Dropdown>();
+            if (property.IsActive())
+            {
+                if (sc.GetProperty() == "color")
+                {
+                    string color = property.options[property.value].text;
+
+                    string[] separator = {"#"};
+                    string[] removeRGBA = sc.ToString().Split(separator, StringSplitOptions.None);
+
+                    parsed += header + removeRGBA[0] + color + "\n";
+                }
+                else
+                {
+                    parsed += header + sc + "\n";
+                }
+            }
+            else
+            {
+                parsed += header + sc + "\n";
+            }
+
+            return parsed;
+        }
+
+        public string ParseCompositeCondition(GameObject[] compositeConditions)
+        {
+            string parsed = "";
+
+            foreach (var cc in compositeConditions)
+            {
+                SimpleCondition sc = FindSimpleCondition(cc);
+
+                Dropdown andOr = cc.transform.Find("AndOr").GetComponent<Dropdown>();
+                string value = andOr.options[andOr.value].text;
+
+                parsed += ParseSimpleCondition(cc, sc, "CompareWithDrop", value + " ");
+            }
+
+            return parsed;
+        }
+
+        public string ParseMultipleActions(GameObject[] thenActions)
+        {
+            string parsed = "";
+            StringAction newStringAction = new StringAction();
+
+            foreach (var a in thenActions)
+            {
+                Action action = FindAction(a, ref newStringAction);
+                parsed += ParseActionEvent(a, action, " ");
+            }
+
+            return parsed;
+        }
+    
+        // Part of "CreateRuleRow" method
+        public static string SerializeRuleToText(Rule rule) {
+            TextRuleSerializer textRuleSerializer = new TextRuleSerializer();
+            StringWriter stringWriter = new StringWriter();
+            textRuleSerializer.PrintRule(rule, stringWriter);
+            return stringWriter.ToString();
+        }
     }
 }
