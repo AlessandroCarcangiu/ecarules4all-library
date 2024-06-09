@@ -123,7 +123,8 @@
       <Content Include="AntLR\extensible\ECARulesLexer.g4.meta" />
       <Content Include="AntLR\extensible\ECARulesParser.g4" />
       <Content Include="AntLR\extensible\ECARulesParser.g4.meta" />
-      <Content Include="Errors.md" />
+      <Content Include="Notes\Errors.md" />
+      <Content Include="Notes\Notes.md" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
