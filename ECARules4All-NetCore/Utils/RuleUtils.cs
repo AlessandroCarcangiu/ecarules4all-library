@@ -178,7 +178,7 @@ namespace ECARules4AllPack.Utils
             new Dictionary<string, RulesStruct>();
 
 
-        private Dictionary<string, (ECARules4AllType, Type)> stateVariables = new Dictionary<string, (ECARules4AllType, Type)>();
+        private static Dictionary<string, (ECARules4AllType, Type)> stateVariables = new Dictionary<string, (ECARules4AllType, Type)>();
         public static List<string> booleanSymbols = new List<string>() {"is", "is not"};
         public static List<string> mathematicalSymbols = new List<string>() {"=", "!=", ">", "<", "<=", ">="};
         
@@ -829,14 +829,8 @@ namespace ECARules4AllPack.Utils
         // +-------------------------------------+
         // | Methods that can be used in library |
         // +-------------------------------------+
-        // Method to get the truncated string from dropdown text
-        public string GetSelectedCutString(string selectedSubjectString)
-        {
-            return Regex.Match(selectedSubjectString, "[^ ]* (.*)").Groups[1].Value;
-        }
-
         // Method to get the type of the selected subject from a dictionary
-        public string GetSubjectType(GameObject subjectSelected, Dictionary<string, Dictionary<GameObject, string>> subjects)
+        public static string GetSubjectType(GameObject subjectSelected, Dictionary<string, Dictionary<GameObject, string>> subjects)
         {
             foreach (var item in subjects)
             {
@@ -852,19 +846,19 @@ namespace ECARules4AllPack.Utils
         }
 
         // Method to get action attributes associated with the selected verb
-        public List<ActionAttribute> GetActionAttributes(Dictionary<string, List<ActionAttribute>> verbsString, string verbSelectedString)
+        public static List<ActionAttribute> GetActionAttributes(Dictionary<string, List<ActionAttribute>> verbsString, string verbSelectedString)
         {
             return verbsString[verbSelectedString];
         }
         
         // Method to find a GameObject by its truncated name
-        public GameObject FindGameObject(string selectedCutString)
+        public static GameObject FindGameObject(string selectedCutString)
         {
             return GameObject.Find(selectedCutString);
         }
         
         // Gets the keys of the state variables
-        public List<string> GetStateVariableKeys()
+        public static List<string> GetStateVariableKeys()
         {
             List<string> entries = new List<string>();
             foreach (var var in stateVariables)
@@ -884,7 +878,7 @@ namespace ECARules4AllPack.Utils
         }
 
         // Gets the symbols for a specific type
-        public List<string> GetSymbolsForType(ECARules4AllType type)
+        public static List<string> GetSymbolsForType(ECARules4AllType type)
         {
             List<string> entries = new List<string>();
             switch (type)
@@ -908,7 +902,7 @@ namespace ECARules4AllPack.Utils
         }
 
         // Gets the type of a specific state variable
-        public ECARules4AllType GetStateVariableType(string variableName)
+        public static ECARules4AllType GetStateVariableType(string variableName)
         {
             return stateVariables[variableName].Item1;
         }
@@ -1069,7 +1063,7 @@ namespace ECARules4AllPack.Utils
         // +--------------------------------------------------------------+
         // | New methods from ButtonsHandle.cs (compositeConditionExists) |
         // +--------------------------------------------------------------+
-        bool CompositeConditionExists()
+        public static bool CompositeConditionExists()
         {
             var allCompositeConditionObjects = GameObject.FindGameObjectsWithTag("CompositeCondition").ToList();
             var compositeConditionObjects = from act in allCompositeConditionObjects where act.name != "CompositeConditionPrefab" select act;
