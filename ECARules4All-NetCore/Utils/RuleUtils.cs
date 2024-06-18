@@ -978,7 +978,7 @@ namespace ECARules4AllPack.Utils
         // | New methods from ButtonsHandle.cs (FindAction) |
         // +------------------------------------------------+
         // todo -> ask for those methods (not sure if are ok in the library)
-        public static Action HandleVerbSelectedType(string verbSelectedType, GameObject subjectSelected, string verbSelectedString, GameObject objectSelected, string objValue, Vector3 raycastPosition, ref StringAction stringAction)
+        public static Action HandleVerbSelectedType(string verbSelectedType, GameObject subjectSelected, string verbSelectedString, GameObject objectSelected, string objValue, Vector3 raycastPosition)
         {
             switch (verbSelectedType)
             {
