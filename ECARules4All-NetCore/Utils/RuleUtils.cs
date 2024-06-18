@@ -725,9 +725,9 @@ namespace ECARules4AllPack.Utils
         }
         
         // Returns for each state variable the name and the ECARules4AllType
-        public static Dictionary<string, ECARules4AllType> FindStateVariables(GameObject gameObject)
+        public static Dictionary<string, (ECARules4AllType, Type)> FindStateVariables<T>(GameObject gameObject)
         {
-            Dictionary<string, ECARules4AllType> variables = new Dictionary<string, ECARules4AllType>();
+            Dictionary<string, (ECARules4AllType, Type)> variables = new Dictionary<string, (ECARules4AllType, Type)>();
 
             foreach (Component c in gameObject.GetComponents<Component>())
             {
@@ -740,7 +740,7 @@ namespace ECARules4AllPack.Utils
                     var componentVariables = ListStateVariables(cType);
                     foreach (var var in componentVariables)
                     {
-                        if(!variables.ContainsKey(var.Key)) variables.Add(var.Key, var.Value);
+                        if(!variables.ContainsKey(var.Key)) variables.Add(var.Key, (var.Value, cType));
                     }
                     //variables = variables.Concat(componentVariables).ToDictionary(s => s.Key, s => s.Value);
                  
@@ -830,7 +830,7 @@ namespace ECARules4AllPack.Utils
         // | Methods that can be used in library |
         // +-------------------------------------+
         // Method to get the type of the selected subject from a dictionary
-        public static string GetSubjectType(GameObject subjectSelected, Dictionary<string, Dictionary<GameObject, string>> subjects)
+        public static string GetSubjectType(GameObject subjectSelected, Dictionary<int, Dictionary<GameObject, string>> subjects)
         {
             foreach (var item in subjects)
             {
@@ -843,18 +843,6 @@ namespace ECARules4AllPack.Utils
                 }
             }
             return null;
-        }
-
-        // Method to get action attributes associated with the selected verb
-        public static List<ActionAttribute> GetActionAttributes(Dictionary<string, List<ActionAttribute>> verbsString, string verbSelectedString)
-        {
-            return verbsString[verbSelectedString];
-        }
-        
-        // Method to find a GameObject by its truncated name
-        public static GameObject FindGameObject(string selectedCutString)
-        {
-            return GameObject.Find(selectedCutString);
         }
         
         // Gets the keys of the state variables
@@ -899,12 +887,6 @@ namespace ECARules4AllPack.Utils
                     break;
             }
             return entries;
-        }
-
-        // Gets the type of a specific state variable
-        public static ECARules4AllType GetStateVariableType(string variableName)
-        {
-            return stateVariables[variableName].Item1;
         }
         
         // Part of "CreateRuleRow" method
