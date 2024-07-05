@@ -3,9 +3,7 @@ C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\obj\Debug
 C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\bin\Debug\ECARules4All_NetCore.dll
 C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\bin\Debug\ECARules4All_NetCore.pdb
 C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\bin\Debug\Antlr4.Runtime.Standard.dll
-C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\bin\Debug\UnityEngine.dll
 C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\bin\Debug\UnityEngine.xml
-C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\obj\Debug\ECARules.F31DBFF3.Up2Date
 C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\obj\Debug\ECARules4All_NetCore.dll
 C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\obj\Debug\ECARules4All_NetCore.pdb
 C:\Users\richs\OneDrive\Documenti\GitHub\ecarules4all-library\ECARules4All-NetCore\bin\Debug\ECARules4All_NetCore.dll
@@ -17,3 +15,6 @@ C:\Users\richs\OneDrive\Documenti\GitHub\ecarules4all-library\ECARules4All-NetCo
 C:\Users\richs\OneDrive\Documenti\GitHub\ecarules4all-library\ECARules4All-NetCore\obj\Debug\ECARules.F31DBFF3.Up2Date
 C:\Users\richs\OneDrive\Documenti\GitHub\ecarules4all-library\ECARules4All-NetCore\obj\Debug\ECARules4All_NetCore.dll
 C:\Users\richs\OneDrive\Documenti\GitHub\ecarules4all-library\ECARules4All-NetCore\obj\Debug\ECARules4All_NetCore.pdb
+C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\obj\Debug\ECARules4All-NetCore.csproj.CopyComplete
+C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\bin\Debug\UnityEngine.UI.dll
+C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\bin\Debug\UnityEngine.CoreModule.dll

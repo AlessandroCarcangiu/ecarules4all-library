@@ -1,0 +1,10 @@
+C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\obj\Release\ECARules4All-NetCore.csproj.AssemblyReference.cache
+C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\obj\Release\ECARules4All-NetCore.csproj.CoreCompileInputs.cache
+C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\bin\Release\ECARules4All_NetCore.dll
+C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\bin\Release\ECARules4All_NetCore.pdb
+C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\bin\Release\Antlr4.Runtime.Standard.dll
+C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\bin\Release\UnityEngine.dll
+C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\bin\Release\UnityEngine.xml
+C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\obj\Release\ECARules4All-NetCore.csproj.CopyComplete
+C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\obj\Release\ECARules4All_NetCore.dll
+C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\obj\Release\ECARules4All_NetCore.pdb

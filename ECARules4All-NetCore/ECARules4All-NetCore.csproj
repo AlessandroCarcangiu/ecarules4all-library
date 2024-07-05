@@ -42,7 +42,10 @@
         <Reference Include="System.Data"/>
         <Reference Include="System.Xml"/>
         <Reference Include="UnityEngine">
-          <HintPath>..\..\..\..\..\Program Files\Unity\Hub\Editor\2023.2.16f1\Editor\Data\Managed\UnityEngine.dll</HintPath>
+          <HintPath>C:\Users\sandr\RiderProjects\ECARules4All-NetCore\ECARules4All-NetCore\bin\Debug\UnityEngine.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UI">
+          <HintPath>..\..\UnityEngine.UI.dll</HintPath>
         </Reference>
     </ItemGroup>
     <ItemGroup>
@@ -74,19 +77,31 @@
         <Compile Include="Taxonomies\Behaviours\Subcategories\Timer.cs" />
         <Compile Include="Taxonomies\Behaviours\Subcategories\Transition.cs" />
         <Compile Include="Taxonomies\Behaviours\Subcategories\Trigger.cs" />
-        <Compile Include="Taxonomies\Objects\Characters\Animal\Animal.cs" />
-        <Compile Include="Taxonomies\Objects\Characters\Animal\Subcategories\AquaticAnimal.cs" />
-        <Compile Include="Taxonomies\Objects\Characters\Animal\Subcategories\Creature.cs" />
-        <Compile Include="Taxonomies\Objects\Characters\Animal\Subcategories\FlyingAnimal.cs" />
-        <Compile Include="Taxonomies\Objects\Characters\Animal\Subcategories\Human.cs" />
-        <Compile Include="Taxonomies\Objects\Characters\Animal\Subcategories\Mannequin.cs" />
-        <Compile Include="Taxonomies\Objects\Characters\Animal\Subcategories\Robot.cs" />
-        <Compile Include="Taxonomies\Objects\Characters\Animal\Subcategories\TerrestrialAnimal.cs" />
+        <Compile Include="Taxonomies\Objects\Characters\Animals\Animal.cs" />
+        <Compile Include="Taxonomies\Objects\Characters\Animals\Subcategories\AquaticAnimal.cs" />
+        <Compile Include="Taxonomies\Objects\Characters\Animals\Subcategories\Creature.cs" />
+        <Compile Include="Taxonomies\Objects\Characters\Animals\Subcategories\FlyingAnimal.cs" />
+        <Compile Include="Taxonomies\Objects\Characters\Animals\Subcategories\Human.cs" />
+        <Compile Include="Taxonomies\Objects\Characters\Animals\Subcategories\Mannequin.cs" />
+        <Compile Include="Taxonomies\Objects\Characters\Animals\Subcategories\Robot.cs" />
+        <Compile Include="Taxonomies\Objects\Characters\Animals\Subcategories\TerrestrialAnimal.cs" />
         <Compile Include="Taxonomies\Objects\Characters\Character.cs" />
-        <Compile Include="Taxonomies\Prop\Prop.cs" />
-        <Compile Include="Taxonomies\Prop\Subcategories\Clothing.cs" />
-        <Compile Include="Taxonomies\Prop\Subcategories\Electronic.cs" />
-        <Compile Include="Taxonomies\Prop\Subcategories\Food.cs" />
+        <Compile Include="Taxonomies\Objects\Interactions\Interaction.cs" />
+        <Compile Include="Taxonomies\Objects\Interactions\Subcategories\Bounds.cs" />
+        <Compile Include="Taxonomies\Objects\Interactions\Subcategories\Button.cs" />
+        <Compile Include="Taxonomies\Objects\Interactions\Subcategories\ECACamera.cs" />
+        <Compile Include="Taxonomies\Objects\Interactions\Subcategories\ECALight.cs" />
+        <Compile Include="Taxonomies\Objects\Interactions\Subcategories\ECAText.cs" />
+        <Compile Include="Taxonomies\Objects\Interactions\Subcategories\ECAVideo.cs" />
+        <Compile Include="Taxonomies\Objects\Props\Prop.cs" />
+        <Compile Include="Taxonomies\Objects\Props\Subcategories\Clothing.cs" />
+        <Compile Include="Taxonomies\Objects\Props\Subcategories\Electronic.cs" />
+        <Compile Include="Taxonomies\Objects\Props\Subcategories\Food.cs" />
+        <Compile Include="Taxonomies\Objects\Props\Subcategories\Weapons\Subcategories\Bullet.cs" />
+        <Compile Include="Taxonomies\Objects\Props\Subcategories\Weapons\Subcategories\EdgedWeapon.cs" />
+        <Compile Include="Taxonomies\Objects\Props\Subcategories\Weapons\Subcategories\Firearm.cs" />
+        <Compile Include="Taxonomies\Objects\Props\Subcategories\Weapons\Subcategories\Shield.cs" />
+        <Compile Include="Taxonomies\Objects\Props\Subcategories\Weapons\Weapon.cs" />
         <Compile Include="UI\UIColors.cs" />
         <Compile Include="UI\VerbComposition.cs" />
         <Compile Include="Utils\ActionAttribute.cs" />

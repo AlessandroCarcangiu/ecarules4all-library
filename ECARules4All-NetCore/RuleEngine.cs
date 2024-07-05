@@ -1195,12 +1195,14 @@ namespace ECARules4AllPack
                             foreach (MethodInfo m in cType.GetMethods())
                             {
                                 ActionAttribute[] actions =
-                                    (ActionAttribute[]) m.GetCustomAttributes(typeof(ActionAttribute), true);
+                                    (ActionAttribute[])m.GetCustomAttributes(typeof(ActionAttribute), true);
                                 foreach (ActionAttribute a in actions)
                                 {
                                     if (a.Verb == GetActionMethod() && a.SubjectType == c.GetType() &&
-                                        a.variableName == (string) GetObject() &&
-                                        (a.ValueType == GetModifierValueType() || a.ValueType.IsSubclassOf(GetModifierValueType()) || GetModifierValueType().IsSubclassOf(a.ValueType)))
+                                        a.variableName == (string)GetObject() &&
+                                        (a.ValueType == GetModifierValueType() ||
+                                         a.ValueType.IsSubclassOf(GetModifierValueType()) ||
+                                         GetModifierValueType().IsSubclassOf(a.ValueType)))
                                     {
                                         method.Add(m);
                                         subject.Add(c);
@@ -1219,11 +1221,12 @@ namespace ECARules4AllPack
                             foreach (FieldInfo f in cType.GetFields())
                             {
                                 StateVariableAttribute[] variables =
-                                    (StateVariableAttribute[]) f.GetCustomAttributes(typeof(StateVariableAttribute),
+                                    (StateVariableAttribute[])f.GetCustomAttributes(
+                                        typeof(StateVariableAttribute),
                                         true);
                                 foreach (StateVariableAttribute a in variables)
                                 {
-                                    if (a.Name == (string) GetObject() && f.FieldType == GetModifierValueType())
+                                    if (a.Name == (string)GetObject() && f.FieldType == GetModifierValueType())
                                     {
                                         passive = false;
                                         /* It is necessary to explain how this bit of code works:
@@ -1280,7 +1283,7 @@ namespace ECARules4AllPack
                                 foreach (MethodInfo m in cType.GetMethods())
                                 {
                                     ActionAttribute[] actions =
-                                        (ActionAttribute[]) m.GetCustomAttributes(typeof(ActionAttribute), true);
+                                        (ActionAttribute[])m.GetCustomAttributes(typeof(ActionAttribute), true);
                                     foreach (ActionAttribute a in actions)
                                     {
                                         if (a.Verb == GetActionMethod())
@@ -1290,7 +1293,7 @@ namespace ECARules4AllPack
                                             {
                                                 if (GetObjectType() != null)
                                                 {
-                                                    if (GetObject() is GameObject && ((GameObject) GetObject())
+                                                    if (GetObject() is GameObject && ((GameObject)GetObject())
                                                         .GetComponent<ECAObject>().isActive)
                                                     {
                                                         if (a.ObjectType == GetObjectType())
@@ -1306,8 +1309,8 @@ namespace ECARules4AllPack
                                                             break;
                                                         }
 
-                                                        foreach (Component cObj in ((GameObject) GetObject())
-                                                            .GetComponents<Component>())
+                                                        foreach (Component cObj in ((GameObject)GetObject())
+                                                                 .GetComponents<Component>())
                                                         {
                                                             if (cObj.GetType() == a.ObjectType)
                                                             {
@@ -1360,11 +1363,12 @@ namespace ECARules4AllPack
 
                                 if (passive && GetObject() is GameObject)
                                 {
-                                    ECAObject actionObject = ((GameObject) GetObject()).GetComponent<ECAObject>();
+                                    ECAObject actionObject =
+                                        ((GameObject)GetObject()).GetComponent<ECAObject>();
                                     if (actionObject != null && actionObject.isActive == true)
                                     {
-                                        foreach (Component cPass in ((GameObject) GetObject())
-                                            .GetComponents<Component>())
+                                        foreach (Component cPass in ((GameObject)GetObject())
+                                                 .GetComponents<Component>())
                                         {
                                             Type cTypePass = cPass.GetType();
                                             if (Attribute.IsDefined(cTypePass, typeof(ECARules4AllAttribute)))
@@ -1372,7 +1376,7 @@ namespace ECARules4AllPack
                                                 foreach (MethodInfo mPass in cTypePass.GetMethods())
                                                 {
                                                     ActionAttribute[] actionsPass =
-                                                        (ActionAttribute[]) mPass.GetCustomAttributes(
+                                                        (ActionAttribute[])mPass.GetCustomAttributes(
                                                             typeof(ActionAttribute), true);
                                                     foreach (ActionAttribute aPass in actionsPass)
                                                     {
@@ -1404,7 +1408,6 @@ namespace ECARules4AllPack
                     }
                 }
             }
-
             return type;
         }
     }
