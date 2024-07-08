@@ -56,7 +56,11 @@
         <Compile Include="Behaviour.cs" />
         <Compile Include="ECAObject.cs" />
         <Compile Include="Objects.cs" />
+        <Compile Include="obj\Debug\.NETFramework,Version=v4.8.1.AssemblyAttributes.cs" />
+        <Compile Include="obj\Release\.NETFramework,Version=v4.8.1.AssemblyAttributes.cs" />
+        <Compile Include="Parsers\ECARulesLexer.cs" />
         <Compile Include="Parsers\ECARulesParser.cs" />
+        <Compile Include="Parsers\ECARulesParserBaseListener.cs" />
         <Compile Include="Parsers\ECARulesParserListener.cs" />
         <Compile Include="Parsers\TextRuleParser.cs" />
         <Compile Include="Parsers\TextRuleSerializer.cs" />
@@ -86,6 +90,14 @@
         <Compile Include="Taxonomies\Objects\Characters\Animals\Subcategories\Robot.cs" />
         <Compile Include="Taxonomies\Objects\Characters\Animals\Subcategories\TerrestrialAnimal.cs" />
         <Compile Include="Taxonomies\Objects\Characters\Character.cs" />
+        <Compile Include="Taxonomies\Objects\Environments\Environment.cs" />
+        <Compile Include="Taxonomies\Objects\Environments\Subcategories\Artwork.cs" />
+        <Compile Include="Taxonomies\Objects\Environments\Subcategories\Building.cs" />
+        <Compile Include="Taxonomies\Objects\Environments\Subcategories\Exterior.cs" />
+        <Compile Include="Taxonomies\Objects\Environments\Subcategories\Furniture.cs" />
+        <Compile Include="Taxonomies\Objects\Environments\Subcategories\Sky.cs" />
+        <Compile Include="Taxonomies\Objects\Environments\Subcategories\Terrain.cs" />
+        <Compile Include="Taxonomies\Objects\Environments\Subcategories\Vegetation.cs" />
         <Compile Include="Taxonomies\Objects\Interactions\Interaction.cs" />
         <Compile Include="Taxonomies\Objects\Interactions\Subcategories\Bounds.cs" />
         <Compile Include="Taxonomies\Objects\Interactions\Subcategories\Button.cs" />
@@ -102,6 +114,12 @@
         <Compile Include="Taxonomies\Objects\Props\Subcategories\Weapons\Subcategories\Firearm.cs" />
         <Compile Include="Taxonomies\Objects\Props\Subcategories\Weapons\Subcategories\Shield.cs" />
         <Compile Include="Taxonomies\Objects\Props\Subcategories\Weapons\Weapon.cs" />
+        <Compile Include="Taxonomies\Objects\Scenes\Scene.cs" />
+        <Compile Include="Taxonomies\Objects\Vehicles\Subcategories\AirVehicle.cs" />
+        <Compile Include="Taxonomies\Objects\Vehicles\Subcategories\LandVehicle.cs" />
+        <Compile Include="Taxonomies\Objects\Vehicles\Subcategories\SeaVehicle.cs" />
+        <Compile Include="Taxonomies\Objects\Vehicles\Subcategories\SpaceVehicle.cs" />
+        <Compile Include="Taxonomies\Objects\Vehicles\Vehicle.cs" />
         <Compile Include="UI\UIColors.cs" />
         <Compile Include="UI\VerbComposition.cs" />
         <Compile Include="Utils\ActionAttribute.cs" />
@@ -138,8 +156,35 @@
       <Content Include="AntLR\extensible\ECARulesLexer.g4.meta" />
       <Content Include="AntLR\extensible\ECARulesParser.g4" />
       <Content Include="AntLR\extensible\ECARulesParser.g4.meta" />
+      <Content Include="bin\Debug\Antlr4.Runtime.Standard.dll" />
+      <Content Include="bin\Debug\ECARules4All_NetCore.dll" />
+      <Content Include="bin\Debug\ECARules4All_NetCore.pdb" />
+      <Content Include="bin\Debug\UnityEngine.CoreModule.dll" />
+      <Content Include="bin\Debug\UnityEngine.dll" />
+      <Content Include="bin\Debug\UnityEngine.UI.dll" />
+      <Content Include="bin\Debug\UnityEngine.xml" />
+      <Content Include="bin\Release\Antlr4.Runtime.Standard.dll" />
+      <Content Include="bin\Release\ECARules4All_NetCore.dll" />
+      <Content Include="bin\Release\ECARules4All_NetCore.pdb" />
+      <Content Include="bin\Release\UnityEngine.dll" />
+      <Content Include="bin\Release\UnityEngine.xml" />
       <Content Include="Notes\Errors.md" />
       <Content Include="Notes\Notes.md" />
+      <Content Include="obj\Debug\ECARules4All-NetCore.csproj.AssemblyReference.cache" />
+      <Content Include="obj\Debug\ECARules4All-NetCore.csproj.CopyComplete" />
+      <Content Include="obj\Debug\ECARules4All-NetCore.csproj.CoreCompileInputs.cache" />
+      <Content Include="obj\Debug\ECARules4All-NetCore.csproj.FileListAbsolute.txt" />
+      <Content Include="obj\Debug\ECARules4All_NetCore.dll" />
+      <Content Include="obj\Debug\ECARules4All_NetCore.pdb" />
+      <Content Include="obj\Release\ECARules4All-NetCore.csproj.AssemblyReference.cache" />
+      <Content Include="obj\Release\ECARules4All-NetCore.csproj.CopyComplete" />
+      <Content Include="obj\Release\ECARules4All-NetCore.csproj.CoreCompileInputs.cache" />
+      <Content Include="obj\Release\ECARules4All-NetCore.csproj.FileListAbsolute.txt" />
+      <Content Include="obj\Release\ECARules4All_NetCore.dll" />
+      <Content Include="obj\Release\ECARules4All_NetCore.pdb" />
+      <Content Include="output\Antlr4.Runtime.Standard.dll" />
+      <Content Include="output\ECARules4All_NetCore.dll" />
+      <Content Include="output\UnityEngine.dll" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

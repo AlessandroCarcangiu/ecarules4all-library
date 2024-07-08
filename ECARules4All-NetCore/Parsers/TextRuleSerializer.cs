@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.IO;
 using ECARules4AllPack.Utils;
+using ECARules4AllPack.Taxonomies.Objects.Interactions.Subcategories;
 using UnityEngine;
 
 
@@ -370,14 +371,13 @@ namespace ECARules4AllPack.Parsers
                 writer.Write("#");
                 writer.Write(UnityEngine.ColorUtility.ToHtmlStringRGB((UnityEngine.Color)val).ToLowerInvariant());
             }
-            // TODO CHECK ECACamera
-            /*else if (val is ECACamera.POV)
+            else if (val is ECACamera.POV)
             {
                 ECACamera.POV pov = (ECACamera.POV) val;
                 if (pov == ECACamera.POV.First) writer.Write("1st person ");
                 if (pov == ECACamera.POV.Third) writer.Write("3rd person");
 
-            }*/
+            }
             else if (val is float)
             {
                 writer.Write(((float)val).ToString("F", CultureInfo.InvariantCulture));
