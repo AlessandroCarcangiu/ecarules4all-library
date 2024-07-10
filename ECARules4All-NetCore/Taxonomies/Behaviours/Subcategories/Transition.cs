@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using ECARules4AllPack.Utils;
+using Scene = ECARules4AllPack.Taxonomies.Objects.Scenes.Scene;
 
 
 namespace ECARules4AllPack.Taxonomies.Behaviours.Subcategories

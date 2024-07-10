@@ -5,6 +5,7 @@ using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using System;
 using ECARules4AllPack.Utils;
+using ECARules4AllPack.Taxonomies.Objects.Interactions.Subcategories;
 using UnityEngine;
 using System.Globalization;
 
@@ -752,19 +753,16 @@ namespace ECARules4AllPack.Parsers
             if (context.color() != null) _value = _color;
             if (context.POV_LITERAL() != null)
             {
-                // TODO CHECK ECACamera
-                /*if (context.POV_LITERAL().GetText().Contains("1st"))
+                if (context.POV_LITERAL().GetText().Contains("1st"))
                 {
                     _value = ECACamera.POV.First;
                 }
                 if (context.POV_LITERAL().GetText().Contains("3rd"))
                 {
                     _value = ECACamera.POV.Third;
-                }*/
-
+                }
             }
-
-
+            
             if (context.BOOL_LITERAL() != null) _value = new ECABoolean(_boolLiteral.choice);
             if (context.BOOL_YES_NO() != null) _value = new ECABoolean(_boolLiteral.choice);
             if (context.ON() != null) _value = new ECABoolean(ECABoolean.BoolType.ON);

@@ -1,5 +1,6 @@
-using ECARules4AllPack.Utils;
 using UnityEngine;
+using ECARules4AllPack.Utils;
+
 
 namespace ECARules4AllPack.Taxonomies.Objects.Interactions.Subcategories
 {
