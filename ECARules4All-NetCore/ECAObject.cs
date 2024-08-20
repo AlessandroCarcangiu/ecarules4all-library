@@ -1,4 +1,7 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
+using ECARules4AllPack.Clients;
 using ECARules4AllPack.Utils;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -6,13 +9,28 @@ using Object = UnityEngine.Object;
 
 namespace ECARules4AllPack
 {
+    public abstract class ECAScript : MonoBehaviour
+    {
+        protected StateVariableAttribute GetStateVariableProperty(string nameProperty)
+        {
+            var property = GetType().GetProperty(nameProperty);
+            // return a StateVariableAttribute if the object contains a property named $"{nameProperty}" 
+            if (property != null)
+            {
+                return property.GetCustomAttribute<StateVariableAttribute>();
+            }
+
+            return null;
+        }
+    }
+    
     /// <summary>
     /// <b>ECAObject</b> is the base class for all objects that can be used in the rule engine.
     /// All the other classes in this package inherit from this class or one of its subclasses.
     /// </summary>
     [DisallowMultipleComponent]
     [ECARules4All("object")]
-    public class ECAObject : MonoBehaviour
+    public class ECAObject : ECAScript
     {
         /// <summary>
         /// <b> GameCollider </b> is the collider of the object.
@@ -26,34 +44,116 @@ namespace ECARules4AllPack
         /// <b>isBusyMoving</b> is a boolean that indicates if the object is moving.
         /// </summary>
         private bool isBusyMoving = false;
-        
+
         /// <summary>
         /// <b>p</b> is the position of the object.
         /// </summary>
         [StateVariable("position", ECARules4AllType.Position)]
-        public Position p;
+        public Position p
+        {
+            get => _p;
+            set
+            {
+                _p = value;
+                var attribute = GetStateVariableProperty(nameof(p));
+                if(attribute != null)
+                {
+                    UpdateValueWrapper.UpdateValue(
+                        this.ToString(),
+                        attribute.Name,
+                        new Dictionary<string, object>
+                        {
+                            { "x", p.x },
+                            { "y", p.y },
+                            { "z", p.z },
+                        }
+                    );
+                }
+            }
+        }
+        private Position _p;
+        
         /// <summary>
         /// <b>r</b> is the rotation of the object.
         /// </summary>
         [StateVariable("rotation", ECARules4AllType.Rotation)]
-        public Rotation r;
+        public Rotation r
+        {
+            get => _r;
+            set
+            {
+                _r = value;
+                var attribute = GetStateVariableProperty(nameof(r));
+                if(attribute != null)
+                {
+                    UpdateValueWrapper.UpdateValue(
+                        this.ToString(),
+                        attribute.Name,
+                        new Dictionary<string, object>
+                        {
+                            { "x", r.x },
+                            { "y", r.y },
+                            { "z", r.z },
+                        }
+                    );
+                }
+            }
+        }
+        private Rotation _r;
+
         /// <summary>
         /// <b>isVisible</b> is a boolean that indicates if the object is visible.
         /// If the object is invisible, it will not be rendered but it will still collide with other objects.
         /// </summary>
-        [StateVariable("visible", ECARules4AllType.Boolean)] 
-        public ECABoolean isVisible = new ECABoolean(ECABoolean.BoolType.YES);
+        [StateVariable("visible", ECARules4AllType.Boolean)]
+        public ECABoolean isVisible // = new ECABoolean(ECABoolean.BoolType.YES);
+        {
+            get => _isVisible;
+            set
+            {
+                _isVisible = value;
+                var attribute = GetStateVariableProperty(nameof(isVisible));
+                if(attribute != null)
+                {
+                    UpdateValueWrapper.UpdateValue(
+                        this.ToString(),
+                        attribute.Name,
+                        isVisible.ToString()
+                    );
+                }
+            }
+        }
+        private ECABoolean _isVisible = new ECABoolean(ECABoolean.BoolType.YES);
+        
         /// <summary>
         /// <b>isActive</b> is a boolean that indicates if the object is active and visible.
         /// If the object is inactive, it will not be rendered and it will not collide with other objects.
         /// </summary>
         [StateVariable("active", ECARules4AllType.Boolean)]
-        public ECABoolean isActive = new ECABoolean(ECABoolean.BoolType.YES);
-        private Canvas canvas;
+        public ECABoolean isActive //= new ECABoolean(ECABoolean.BoolType.YES);
+        {
+            get => _isActive;
+            set
+            {
+                _isActive = value;
+                var attribute = GetStateVariableProperty(nameof(isActive));
+                if(attribute != null)
+                {
+                    UpdateValueWrapper.UpdateValue(
+                        this.ToString(),
+                        attribute.Name,
+                        isActive.ToString()
+                    );
+                }
+            }
+        }
+        private ECABoolean _isActive = new ECABoolean(ECABoolean.BoolType.YES);
         
+        private Canvas canvas;
 
         private void Start()
         {
+            //p.Owner = this;
             TryGetComponent<Canvas>(out canvas);
             UpdateVisibility();
         }
@@ -100,7 +200,8 @@ namespace ECARules4AllPack
         [Action(typeof(ECAObject), "rotates around", typeof(Rotation))]
         public void Rotates(Rotation newRot)
         {
-            r.Assign(newRot);
+            //r.Assign(newRot);
+            r = new Rotation(newRot);
             transform.Rotate(r.x, r.y, r.z);
         }
         
@@ -116,7 +217,8 @@ namespace ECARules4AllPack
             if (o.name == hit.collider.gameObject.name && looked.isActive)
             {
                 transform.LookAt(looked.gameObject.transform);
-                r.Assign(transform.rotation);
+                //r.Assign(transform.rotation);
+                r = new Rotation(transform.rotation);
             }
             
         }
@@ -127,7 +229,8 @@ namespace ECARules4AllPack
         [Action(typeof(ECAObject), "shows")]
         public void Shows()
         {
-            isVisible.Assign(ECABoolean.BoolType.YES);
+            //isVisible.Assign(ECABoolean.BoolType.YES);
+            isVisible = new ECABoolean(ECABoolean.BoolType.YES);
             UpdateVisibility();
         }
         
@@ -137,7 +240,8 @@ namespace ECARules4AllPack
         [Action(typeof(ECAObject), "hides")]
         public void Hides()
         {
-            isVisible.Assign(ECABoolean.BoolType.NO);
+            //isVisible.Assign(ECABoolean.BoolType.NO);
+            isVisible = new ECABoolean(ECABoolean.BoolType.NO);
             UpdateVisibility();
         }
         
@@ -147,7 +251,8 @@ namespace ECARules4AllPack
         [Action(typeof(ECAObject), "activates")]
         public void Activates()
         {
-            isActive.Assign(ECABoolean.BoolType.YES);
+            //isActive.Assign(ECABoolean.BoolType.YES);
+            isActive = new ECABoolean(ECABoolean.BoolType.YES);
             UpdateVisibility();
         }
         /// <summary>
@@ -156,7 +261,8 @@ namespace ECARules4AllPack
         [Action(typeof(ECAObject), "deactivates")]
         public void Deactivates()
         {
-            isActive.Assign(ECABoolean.BoolType.NO);
+            //isActive.Assign(ECABoolean.BoolType.NO);
+            isActive = new ECABoolean(ECABoolean.BoolType.NO);
             UpdateVisibility();
         }
         
@@ -193,10 +299,12 @@ namespace ECARules4AllPack
             if (gameCollider.Length == 0)
                 gameCollider = this.gameObject.GetComponentsInChildren<Collider>();
             
-            p = new Position();
-            p.Assign(transform.position);
-            r = new Rotation();
-            r.Assign(transform.rotation);
+            //p = new Position();
+            //p.Assign(transform.position);
+            p = new Position(transform.position);
+            //r = new Rotation();
+            //r.Assign(transform.rotation);
+            r = new Rotation(transform.rotation);
         }
         
         //TODO: should be private
@@ -243,10 +351,12 @@ namespace ECARules4AllPack
                 // Set our position as a fraction of the distance between the markers.
 
                 gameObject.transform.position = Vector3.Lerp(startMarker, endMarker, fractionOfJourney);
-                GetComponent<ECAObject>().p.Assign(gameObject.transform.position);
+                //GetComponent<ECAObject>().p.Assign(gameObject.transform.position);
+                GetComponent<ECAObject>().p = new Position(gameObject.transform.position);
                 yield return null;
             }
-            GetComponent<ECAObject>().p.Assign(gameObject.transform.position);
+            //GetComponent<ECAObject>().p.Assign(gameObject.transform.position);
+            GetComponent<ECAObject>().p = new Position(gameObject.transform.position);
             isBusyMoving = false;
         }
 

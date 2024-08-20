@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using ECARules4AllPack.Clients;
 using ECARules4AllPack.Utils;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -18,8 +19,14 @@ namespace ECARules4AllPack
         public static RuleEngine singleton;
         private List<Rule> rules = new List<Rule>();
         private EventBus eventQueue;
+        
+        public List<AbstractClientBase> clients { get; set; } = new List<AbstractClientBase>();
 
-
+        public void AddClient(AbstractClientBase newClient)
+        {
+            clients.Add(newClient);
+        }
+        
         /// <summary>
         /// <para>Returns an Instance of the RuleEngine.</para>
         /// </summary>
@@ -36,6 +43,7 @@ namespace ECARules4AllPack
             return singleton;
         }
 
+        
         private RuleEngine()
         {
             eventQueue = EventBus.GetInstance();
